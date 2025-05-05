@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from '../components/Sidebar';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 import { 
   BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer 
 } from 'recharts';
 import { ChevronDown, ChevronUp, BarChart2, PieChart as PieChartIcon, Table2 } from 'lucide-react';
 import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import 'jspdf-autotable'; // Import this after jsPDF
 import './DataAnalysis.css';
 import img from '../images/img.png';
 
@@ -22,6 +23,8 @@ function DataAnalysis() {
   const [filteredData, setFilteredData] = useState([]);
   const [selectedId, setSelectedId] = useState(''); // State to store the selected ID
   const [lastId, setLastId] = useState(''); // State to store the last ID
+  const [jobStatusData, setJobStatusData] = useState([]); // State to store job status data
+  const [latestJobStatusData, setLatestJobStatusData] = useState([]); // State for latest job status
   
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658', '#8dd1e1'];
 
@@ -47,9 +50,18 @@ function DataAnalysis() {
         setLastId(lastFile._id);
         fetchDataById(lastFile._id);
       } else {
-        alert('No Excel files found');
+        Swal.fire({
+          icon: 'info',
+          title: 'No Files Found',
+          text: 'No Excel files are available in the database.',
+        });
       }
     } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error Fetching Files',
+        text: err.message,
+      });
       console.error('Error fetching last ID:', err.message);
       setError(err.message);
     }
@@ -86,6 +98,41 @@ function DataAnalysis() {
         setLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    fetch('http://localhost:8081/excel/job-status')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch job status data');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Job Status Data:', data); // Debugging: Log fetched data
+        setJobStatusData(data);
+      })
+      .catch((err) => {
+        console.error('Error fetching job status data:', err.message);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch('http://localhost:8081/excel/latest-job-status')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch latest job status data');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Latest Job Status Data:', data); // Debugging: Log fetched data
+        setLatestJobStatusData(data);
+      })
+      .catch((err) => {
+        console.error('Error fetching latest job status data:', err.message);
+      });
+  }, []);
+
   useEffect(() => {
     if (searchTerm.trim() === '') {
       setFilteredData(data);
@@ -249,34 +296,6 @@ function DataAnalysis() {
     return 'cell-default';
   };
 
-  const generatePDF = () => {
-    const doc = new jsPDF();
-
-    // Add title
-    doc.setFontSize(18);
-    doc.text('Data Analysis Report', 14, 20);
-
-    // Check if there is data to include in the report
-    if (filteredData.length > 0) {
-      const tableColumn = Object.keys(filteredData[0]); // Table headers
-      const tableRows = filteredData.map(row => Object.values(row)); // Table data
-
-      // Add table using autoTable
-      doc.autoTable({
-        head: [tableColumn],
-        body: tableRows,
-        startY: 30,
-        theme: 'grid',
-      });
-    } else {
-      doc.setFontSize(14);
-      doc.text('No data available to generate the report.', 14, 40);
-    }
-
-    // Save the PDF
-    doc.save('data-analysis-report.pdf');
-  };
-
   if (loading) return (
     <div className="loading-container">
       <div className="loading-text">Loading data...</div>
@@ -374,6 +393,37 @@ function DataAnalysis() {
                   <Legend />
                 </PieChart>
               </ResponsiveContainer>
+            </div>
+
+
+            {/* Latest Job Status Section */}
+            <div className="card">
+              <h2 className="chart-title">Latest Job Status Distribution</h2>
+              {latestJobStatusData.length > 0 ? (
+                <ResponsiveContainer width="100%" height={400}>
+                  <PieChart>
+                    <Pie
+                      data={latestJobStatusData}
+                      cx="50%"
+                      cy="50%"
+                      labelLine={false}
+                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                      outerRadius={120}
+                      fill="#8884d8"
+                      dataKey="count"
+                      nameKey="status"
+                    >
+                      {latestJobStatusData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                  </PieChart>
+                </ResponsiveContainer>
+              ) : (
+                <p>No latest job status data available</p>
+              )}
             </div>
 
             <div className="card">
@@ -510,22 +560,6 @@ function DataAnalysis() {
                   <p className="summary-value">{jobCounts.pending}</p>
                 </div>
               </div>
-            </div>
-
-            <div className="card card-padding">
-              <button 
-                onClick={generatePDF} 
-                style={{
-                  backgroundColor: '#007bff',
-                  color: 'white',
-                  padding: '10px 20px',
-                  border: 'none',
-                  borderRadius: '5px',
-                  cursor: 'pointer',
-                }}
-              >
-                Generate PDF
-              </button>
             </div>
           </div>
         </div>

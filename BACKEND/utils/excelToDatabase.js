@@ -20,11 +20,21 @@ const excelToDatabase = async (filePath, fileName) => {
       // Convert sheet to JSON
       const jsonData = xlsx.utils.sheet_to_json(worksheet);
       
+      // Normalize column names
+      const normalizedData = jsonData.map(row => {
+        const normalizedRow = {};
+        Object.keys(row).forEach(key => {
+          const normalizedKey = key.trim(); // Remove extra spaces
+          normalizedRow[normalizedKey] = row[key];
+        });
+        return normalizedRow;
+      });
+      
       // Create document in database
       const excelData = new ExcelData({
         fileName: fileName,
         sheetName: sheetName,
-        data: jsonData
+        data: normalizedData
       });
       
       const savedData = await excelData.save();

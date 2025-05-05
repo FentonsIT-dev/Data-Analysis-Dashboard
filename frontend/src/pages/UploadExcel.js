@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Sidebar from '../components/Sidebar';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 function UploadExcel() {
   const [file, setFile] = useState(null);
@@ -271,7 +272,11 @@ function UploadExcel() {
 
   const handleUpload = async () => {
     if (!file) {
-      showAlert('error', 'No File Selected', 'Please select an Excel file to upload.');
+      Swal.fire({
+        icon: 'error',
+        title: 'No File Selected',
+        text: 'Please select an Excel file to upload.',
+      });
       return;
     }
 
@@ -291,10 +296,18 @@ function UploadExcel() {
       }
       
       const result = await response.json();
-      showAlert('success', 'Upload Successful', result.message || 'Your Excel file has been uploaded and processed successfully!');
+      Swal.fire({
+        icon: 'success',
+        title: 'Upload Successful',
+        text: result.message || 'Your Excel file has been uploaded and processed successfully!',
+      });
       setFile(null);
     } catch (err) {
-      showAlert('error', 'Upload Failed', err.message);
+      Swal.fire({
+        icon: 'error',
+        title: 'Upload Failed',
+        text: err.message,
+      });
     } finally {
       setIsUploading(false);
     }
