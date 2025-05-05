@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from '../components/Sidebar';
 import Swal from 'sweetalert2'; // Import SweetAlert2
 
@@ -7,6 +7,7 @@ function UploadExcel() {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState(null);
+  const [uploadHistory, setUploadHistory] = useState([]); // State for upload history
   const fileInputRef = useRef(null);
 
   // Styles
@@ -55,54 +56,46 @@ function UploadExcel() {
     card: {
       backgroundColor: 'white',
       borderRadius: '0.5rem',
+      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+      overflow: 'hidden',
+      marginBottom: '2rem',
+    },
+    cardHeader: {
+      padding: '1.5rem',
+      borderBottom: '1px solid #e5e7eb',
+    },
+    cardTitle: {
+      fontSize: '1.25rem',
+      fontWeight: 600,
+      color: '#1f2937',
+      margin: 0,
+    },
+    cardSubtitle: {
+      color: '#6b7280',
+      fontSize: '0.875rem',
+      marginTop: '0.25rem',
+    },
+    cardBody: {
+      padding: '1.5rem',
+    },
+    table: {
+      width: '100%',
+      borderCollapse: 'collapse',
+    },
+    tableHead: {
+      backgroundColor: '#f9f9f9',
+      fontWeight: 'bold',
+    },
+    tableCell: {
+      padding: '10px',
+      borderBottom: '1px solid #ddd',
+      textAlign: 'left',
     },
     navItemHover: {
       backgroundColor: '#374151'
     },
     navItemActive: {
       backgroundColor: '#3b82f6'
-    },
-    uploadSection: {
-      maxWidth: '48rem',
-      margin: '0 auto'
-    },
-    pageHeader: {
-      marginBottom: '2rem'
-    },
-    pageTitle: {
-      fontSize: '1.875rem',
-      fontWeight: 700,
-      color: '#1f2937',
-      marginBottom: '0.5rem'
-    },
-    pageSubtitle: {
-      color: '#6b7280',
-      marginTop: '0.5rem'
-    },
-    card: {
-      backgroundColor: 'white',
-      borderRadius: '0.5rem',
-      boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-      overflow: 'hidden',
-      marginBottom: '2rem'
-    },
-    cardHeader: {
-      padding: '1.5rem',
-      borderBottom: '1px solid #e5e7eb'
-    },
-    cardTitle: {
-      fontSize: '1.25rem',
-      fontWeight: 600,
-      color: '#1f2937',
-      margin: 0
-    },
-    cardSubtitle: {
-      color: '#6b7280',
-      fontSize: '0.875rem',
-      marginTop: '0.25rem'
-    },
-    cardBody: {
-      padding: '1.5rem'
     },
     uploadZone: {
       border: '2px dashed #d1d5db',
@@ -242,8 +235,34 @@ function UploadExcel() {
       textAlign: 'center',
       padding: '2rem 0',
       color: '#6b7280'
+    },
+    historyBox: {
+      maxHeight: '300px', // Set a fixed height for the history box
+      overflowY: 'auto', // Enable vertical scrolling
+      border: '1px solid #ddd',
+      borderRadius: '0.5rem',
+      padding: '1rem',
+      backgroundColor: '#fff',
     }
   };
+
+  useEffect(() => {
+    // Fetch upload history
+    const fetchUploadHistory = async () => {
+      try {
+        const response = await fetch('http://localhost:8081/excel/');
+        if (!response.ok) {
+          throw new Error('Failed to fetch upload history');
+        }
+        const data = await response.json();
+        setUploadHistory(data);
+      } catch (error) {
+        console.error('Error fetching upload history:', error.message);
+      }
+    };
+
+    fetchUploadHistory();
+  }, []);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -311,6 +330,10 @@ function UploadExcel() {
         text: result.message || 'Your Excel file has been uploaded and processed successfully!',
       });
       setFile(null);
+
+      // Refresh upload history
+      const updatedHistory = await fetch('http://localhost:8081/excel/').then((res) => res.json());
+      setUploadHistory(updatedHistory);
     } catch (err) {
       Swal.fire({
         icon: 'error',
@@ -477,9 +500,30 @@ function UploadExcel() {
               <h2 style={styles.cardTitle}>Upload History</h2>
             </div>
             <div style={styles.cardBody}>
-              <div style={styles.historyEmpty}>
-                <p>Your recent uploads will appear here</p>
-              </div>
+              {uploadHistory.length > 0 ? (
+                <div style={styles.historyBox}>
+                  <table style={styles.table}>
+                    <thead style={styles.tableHead}>
+                      <tr>
+                        <th style={styles.tableCell}>File Name</th>
+                        <th style={styles.tableCell}>Upload Date</th>
+                        <th style={styles.tableCell}>Sheet Name</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {uploadHistory.map((file, index) => (
+                        <tr key={index}>
+                          <td style={styles.tableCell}>{file.fileName}</td>
+                          <td style={styles.tableCell}>{new Date(file.uploadDate).toLocaleString()}</td>
+                          <td style={styles.tableCell}>{file.sheetName}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p>No upload history available</p>
+              )}
             </div>
           </div>
         </div>
