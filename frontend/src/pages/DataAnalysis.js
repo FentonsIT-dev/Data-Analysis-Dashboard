@@ -11,6 +11,62 @@ import 'jspdf-autotable'; // Import this after jsPDF
 import './DataAnalysis.css';
 import img from '../images/img.png';
 
+const styles = {
+  appContainer: {
+    display: 'flex',
+    minHeight: '100vh',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
+    backgroundColor: '#f4f4f4',
+    margin: 0,
+  },
+  sidebar: {
+    width: '16rem',
+    flexShrink: 0, // Prevent the sidebar from shrinking
+    backgroundColor: '#1f2937',
+    color: 'white',
+    height: '100vh', // Ensure the sidebar spans the full height
+    position: 'fixed', // Fix the sidebar to the left
+    top: 0,
+    left: 0,
+  },
+  contentContainer: {
+    flex: 1,
+    marginLeft: '16rem', // Add margin to account for the fixed sidebar width
+    padding: '2rem',
+    boxSizing: 'border-box', // Include padding in width calculation
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: '8px',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    marginBottom: '20px',
+    padding: '20px',
+  },
+  chartTitle: {
+    fontSize: '18px',
+    fontWeight: 'bold',
+    marginBottom: '10px',
+  },
+  tableContainer: {
+    overflowX: 'auto',
+  },
+  table: {
+    width: '100%',
+    borderCollapse: 'collapse',
+  },
+  tableHeadCell: {
+    backgroundColor: '#f9f9f9',
+    fontWeight: 'bold',
+    padding: '10px',
+    textAlign: 'left',
+    borderBottom: '1px solid #ddd',
+  },
+  tableBodyCell: {
+    padding: '10px',
+    borderBottom: '1px solid #ddd',
+  },
+};
+
 function DataAnalysis() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -315,9 +371,9 @@ function DataAnalysis() {
   const jobCounts = calculateJobCounts();
 
   return (
-    <div className="app-container">
+    <div style={styles.appContainer}>
       <Sidebar />
-      <div className="content-container">
+      <div style={styles.contentContainer}>
         <div className="dashboard-container">
           <div className="content-wrapper">
             <div className="cover-photo-container">
@@ -326,7 +382,7 @@ function DataAnalysis() {
 
             <h1 className="dashboard-header">Data Analysis Dashboard</h1>
             
-            <div className="card card-padding">
+            <div style={styles.card}>
               <div className="controls-container">
                 <input
                   type="text"
@@ -349,7 +405,7 @@ function DataAnalysis() {
             </div>
 
             {/* Input to fetch data by ID */}
-            <div className="card card-padding">
+            <div style={styles.card}>
               <div className="id-fetch-container">
            
                 
@@ -371,8 +427,8 @@ function DataAnalysis() {
             </div>
 
             {/* Pie Chart for Fault Type */}
-            <div className="card">
-              <h2 className="chart-title">Fault Type Distribution</h2>
+            <div style={styles.card}>
+              <h2 style={styles.chartTitle}>Fault Type Distribution</h2>
               <ResponsiveContainer width="100%" height={400}>
                 <PieChart>
                   <Pie
@@ -397,8 +453,8 @@ function DataAnalysis() {
 
 
             {/* Latest Job Status Section */}
-            <div className="card">
-              <h2 className="chart-title">Latest Job Status Distribution</h2>
+            <div style={styles.card}>
+              <h2 style={styles.chartTitle}>Latest Job Status Distribution</h2>
               {latestJobStatusData.length > 0 ? (
                 <ResponsiveContainer width="100%" height={400}>
                   <PieChart>
@@ -426,7 +482,7 @@ function DataAnalysis() {
               )}
             </div>
 
-            <div className="card">
+            <div style={styles.card}>
               <div className="tabs-container">
                 <button 
                   className={`tab-button ${activeTab === 'table' ? 'active' : ''}`}
@@ -449,12 +505,12 @@ function DataAnalysis() {
               </div>
               <div>
                 {activeTab === 'table' && (
-                  <div className="table-container">
-                    <table className="data-table">
+                  <div style={styles.tableContainer}>
+                    <table style={styles.table}>
                       <thead>
                         <tr>
                           {Object.keys(sortedData[0] || {}).map((key, index) => (
-                            <th key={index} onClick={() => requestSort(key)} className="table-head-cell">
+                            <th key={index} onClick={() => requestSort(key)} style={styles.tableHeadCell}>
                               <div className="head-cell-content">
                                 {key} {getSortIcon(key)} {/* Add sorting indicator */}
                               </div>
@@ -466,7 +522,7 @@ function DataAnalysis() {
                         {sortedData.slice(0, 20).map((row, index) => ( // Display 20 rows per page
                           <tr key={index} className={`table-body-row ${index % 2 === 0 ? 'even-row' : 'odd-row'}`}>
                             {Object.entries(row).map(([key, value], idx) => (
-                              <td key={idx} className={`table-body-cell ${getCellStyle(key, value)}`}>
+                              <td key={idx} style={styles.tableBodyCell} className={getCellStyle(key, value)}>
                                 {String(value)}
                               </td>
                             ))}
@@ -484,7 +540,7 @@ function DataAnalysis() {
                 
                 {activeTab === 'bar' && (
                   <div className="chart-container">
-                    <h2 className="chart-title">Distribution of {selectedColumn || 'Faults'}</h2>
+                    <h2 style={styles.chartTitle}>Distribution of {selectedColumn || 'Faults'}</h2>
                     <ResponsiveContainer width="100%" height={400}>
                       <BarChart
                         data={selectedColumn ? chartData : prepareFaultTypeChartData()} // Use fault data if no column is selected
@@ -512,7 +568,7 @@ function DataAnalysis() {
                 
                 {activeTab === 'pie' && selectedColumn && (
                   <div className="chart-container">
-                    <h2 className="chart-title">
+                    <h2 style={styles.chartTitle}>
                       Distribution of {selectedColumn}
                     </h2>
                     <ResponsiveContainer width="100%" height={400}>
@@ -540,7 +596,7 @@ function DataAnalysis() {
               </div>
             </div>
             
-            <div className="card card-padding">
+            <div style={styles.card}>
               <h2 className="stats-title">Job Status Summary</h2>
               <div className="summary-grid">
                 <div className="summary-card summary-card-blue">

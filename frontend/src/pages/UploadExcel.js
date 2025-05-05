@@ -17,41 +17,50 @@ function UploadExcel() {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif',
       backgroundColor: '#f9fafb',
       color: '#1f2937',
-      margin: 0
+      margin: 0,
     },
     sidebar: {
       width: '16rem',
+      flexShrink: 0, // Prevent the sidebar from shrinking
       backgroundColor: '#1f2937',
       color: 'white',
-      padding: '1rem'
+      height: '100vh', // Ensure the sidebar spans the full height
+      position: 'fixed', // Fix the sidebar to the left
+      top: 0,
+      left: 0,
     },
-    sidebarHeader: {
-      fontSize: '1.25rem',
+    contentContainer: {
+      flex: 1,
+      marginLeft: '16rem', // Add margin to account for the fixed sidebar width
+      padding: '2rem',
+      boxSizing: 'border-box', // Include padding in width calculation
+    },
+    uploadSection: {
+      maxWidth: '48rem',
+      margin: '0 auto',
+    },
+    pageHeader: {
+      marginBottom: '2rem',
+    },
+    pageTitle: {
+      fontSize: '1.875rem',
       fontWeight: 700,
-      marginBottom: '1.5rem'
+      color: '#1f2937',
+      marginBottom: '0.5rem',
     },
-    sidebarNav: {
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '0.5rem'
+    pageSubtitle: {
+      color: '#6b7280',
+      marginTop: '0.5rem',
     },
-    navItem: {
-      display: 'block',
-      padding: '0.5rem 1rem',
-      borderRadius: '0.375rem',
-      textDecoration: 'none',
-      color: 'white',
-      transition: 'background-color 0.2s'
+    card: {
+      backgroundColor: 'white',
+      borderRadius: '0.5rem',
     },
     navItemHover: {
       backgroundColor: '#374151'
     },
     navItemActive: {
       backgroundColor: '#3b82f6'
-    },
-    contentContainer: {
-      flex: 1,
-      padding: '2rem'
     },
     uploadSection: {
       maxWidth: '48rem',
