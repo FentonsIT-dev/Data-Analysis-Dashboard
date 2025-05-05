@@ -1,0 +1,442 @@
+/* Main container styles */
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8fafc;
+}
+
+.content-container {
+  margin-left: 200px; /* Reduced from 250px */
+  width: calc(100% - 200px); /* Adjust width accordingly */
+  padding: 1.5rem;
+}
+
+.dashboard-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Header styles */
+.dashboard-header {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 2rem;
+  text-align: center;
+  position: relative;
+}
+
+.dashboard-header::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  border-radius: 2px;
+}
+
+/* Cover photo styles */
+.cover-photo-container {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.cover-photo {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Card styles */
+.card {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.card-padding {
+  padding: 1.5rem;
+}
+
+/* Controls styles */
+.controls-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.search-input,
+.column-select {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus,
+.column-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Tabs styles */
+.tabs-container {
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tab-button {
+  padding: 0.875rem 1.5rem;
+  font-weight: 600;
+  color: #64748b;
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+  color: #3b82f6;
+}
+
+.tab-button.active {
+  color: #3b82f6;
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #3b82f6;
+}
+
+.tab-button svg {
+  margin-right: 0.5rem;
+}
+
+/* Table styles */
+.table-container {
+  overflow-x: auto;
+  max-height: 600px; /* Increase table height */
+  overflow-y: auto; /* Add vertical scrolling if needed */
+  border-radius: 0.5rem;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background-color: white;
+}
+
+.table-header {
+  background-color: #f1f5f9;
+}
+
+.table-head-cell {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.table-head-cell:hover {
+  background-color: #e2e8f0;
+}
+
+.head-cell-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.table-body-row {
+  transition: background-color 0.2s ease;
+}
+
+.table-body-row.even-row {
+  background-color: #f8fafc;
+}
+
+.table-body-row.odd-row {
+  background-color: white;
+}
+
+.table-body-row:hover {
+  background-color: #f1f5f9;
+}
+
+.table-body-cell {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.9rem;
+}
+
+/* Cell color styles */
+.cell-default {
+  background-color: transparent;
+  color: black;
+}
+
+.cell-blue {
+  background-color: #007bff; /* Blue for informational values */
+  color: white;
+}
+
+.cell-green {
+  background-color: #28a745; /* Green for positive values */
+  color: white;
+}
+
+.cell-yellow {
+  background-color: #ffc107; /* Yellow for warnings */
+  color: black;
+}
+
+.cell-red {
+  background-color: #dc3545; /* Red for negative values */
+  color: white;
+}
+
+.cell-purple {
+  background-color: #f3e8ff;
+  color: #6b21a8;
+  font-weight: 500;
+}
+
+/* Pagination info */
+.pagination-info {
+  padding: 1rem;
+  text-align: center;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+/* Chart styles */
+.chart-container {
+  height: 400px;
+  margin-top: 1rem;
+}
+
+.chart-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Stats styles */
+.stats-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.25rem;
+}
+
+.stat-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.stat-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #3b82f6;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed #cbd5e1;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.no-data-text {
+  color: #64748b;
+  font-style: italic;
+}
+
+/* Summary cards */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.summary-card {
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.summary-card-blue {
+  background-color: #dbeafe;
+}
+
+.summary-card-green {
+  background-color: #dcfce7;
+}
+
+.summary-card-purple {
+  background-color: #f3e8ff;
+}
+
+.summary-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.summary-label-blue {
+  color: #1e40af;
+}
+
+.summary-label-green {
+  color: #166534;
+}
+
+.summary-label-purple {
+  color: #6b21a8;
+}
+
+.summary-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Loading and error states */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.loading-text {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.error-container {
+  background-color: #fee2e2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin: 1.5rem;
+}
+
+.error-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .content-container {
+    margin-left: 0;
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .controls-container {
+    flex-direction: column;
+  }
+
+  .tabs-container {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+/* Jobs Summary Table Styles */
+.jobs-summary-table {
+  margin-top: 1rem;
+}
+
+.jobs-summary-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.jobs-summary-table th,
+.jobs-summary-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.jobs-summary-table th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+  color: #334155;
+}
+
+.jobs-summary-table tr:last-child td {
+  border-bottom: none;
+}
+
+.jobs-summary-table tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Responsive adjustments for jobs summary */
+@media (max-width: 768px) {
+  .jobs-summary-table table {
+    font-size: 0.875rem;
+  }
+  
+  .jobs-summary-table th,
+  .jobs-summary-table td {
+    padding: 0.5rem 0.75rem;
+  }
+}
