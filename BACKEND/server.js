@@ -89,6 +89,9 @@ app.post("/upload-excel", upload.single("excelFile"), async (req, res) => {
     }
 });
 
+//test route to get all data from the database
+
+
 // Testing endpoint
 app.get("/", (req, res) => {
     res.send("API is running successfully!");
