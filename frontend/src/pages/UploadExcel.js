@@ -316,7 +316,7 @@ function UploadExcel() {
 
     //http://localhost:8081/excel/upload
     try {
-      const response = await fetch('https://cooperative-surprise-production.up.railway.app/excel/upload-excel', {
+      const response = await fetch('https://cooperative-surprise-production.up.railway.app/excel/upload', {
         method: 'POST',
         body: formData,
       });
