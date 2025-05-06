@@ -21,7 +21,7 @@ app.use(cors());
 
 // Enable CORS
 app.use(cors());
-
+//test
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)){
