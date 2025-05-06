@@ -34,9 +34,6 @@ jobs:
         working-directory: ./frontend
         run: npm install
 
-      - name: 🛠️ Build frontend
-        working-directory: ./frontend
-        run: npm run build
 
       # Optional: Deploy backend to Railway
       # Uncomment the following lines if you have a Railway deploy hook
