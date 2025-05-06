@@ -250,7 +250,8 @@ function UploadExcel() {
     // Fetch upload history
     const fetchUploadHistory = async () => {
       try {
-        const response = await fetch('http://localhost:8081/excel/');
+        //http://localhost:8081/excel/
+        const response = await fetch('https://cooperative-surprise-production.up.railway.app/excel/');
         if (!response.ok) {
           throw new Error('Failed to fetch upload history');
         }
@@ -313,8 +314,9 @@ function UploadExcel() {
     const formData = new FormData();
     formData.append('excelFile', file);
 
+    //http://localhost:8081/excel/upload
     try {
-      const response = await fetch('http://localhost:8081/excel/upload', {
+      const response = await fetch('https://cooperative-surprise-production.up.railway.app/excel/upload', {
         method: 'POST',
         body: formData,
       });
@@ -332,7 +334,8 @@ function UploadExcel() {
       setFile(null);
 
       // Refresh upload history
-      const updatedHistory = await fetch('http://localhost:8081/excel/').then((res) => res.json());
+      //http://localhost:8081/excel/
+      const updatedHistory = await fetch('https://cooperative-surprise-production.up.railway.app/excel/').then((res) => res.json());
       setUploadHistory(updatedHistory);
     } catch (err) {
       Swal.fire({

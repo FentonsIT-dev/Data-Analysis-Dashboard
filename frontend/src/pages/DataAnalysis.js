@@ -96,7 +96,9 @@ function DataAnalysis() {
   // Function to fetch the last ID
   const fetchLastId = async () => {
     try {
-      const response = await fetch('http://localhost:8081/excel');
+      //http://localhost:8081/excel
+      
+      const response = await fetch('https://cooperative-surprise-production.up.railway.app/excel');
       if (!response.ok) {
         throw new Error('Failed to fetch Excel files');
       }
@@ -125,7 +127,8 @@ function DataAnalysis() {
 
   useEffect(() => {
     console.log("Fetching data from backend...");
-    fetch('http://localhost:8081/excel/all-rows')
+    //http://localhost:8081/excel/all-rows
+    fetch('https://cooperative-surprise-production.up.railway.app/excel/all-rows')
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to fetch data');
@@ -156,7 +159,8 @@ function DataAnalysis() {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:8081/excel/job-status')
+    //http://localhost:8081/excel/job-status
+    fetch('https://cooperative-surprise-production.up.railway.app/excel/job-status')
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to fetch job status data');
@@ -173,7 +177,8 @@ function DataAnalysis() {
   }, []);
 
   useEffect(() => {
-    fetch('http://localhost:8081/excel/latest-job-status')
+    //http://localhost:8081/excel/job-status
+    fetch('https://cooperative-surprise-production.up.railway.app/excel/latest-job-status')
       .then((response) => {
         if (!response.ok) {
           throw new Error('Failed to fetch latest job status data');
@@ -206,7 +211,8 @@ function DataAnalysis() {
   const fetchDataById = async (id) => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:8081/excel/${id}`); // Fetch data by ID
+      //http://localhost:8081/excel/${id}
+      const response = await fetch(`https://cooperative-surprise-production.up.railway.app/excel/${id}`); // Fetch data by ID
       if (!response.ok) {
         throw new Error('Failed to fetch data by ID');
       }
