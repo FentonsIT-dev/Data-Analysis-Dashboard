@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node BACKEND/server.js",
+    "dev" : "cd frontend/npm run start",
     "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "savinda",
